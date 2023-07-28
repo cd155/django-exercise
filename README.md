@@ -1,15 +1,22 @@
 # django-exercise
 
 Need to start the Python virtual environment. In this way, you don't need to worry about your global settings
-```source tutorial-env/bin/activate```
+```bash
+# 1. cd into outer layer folder of the project folder
 
-first time, need to run 
-```p3p install django```
-(Starting from Python 3 virtual environment is natively supported, so it is allowed in NixOS)
+# 2. set up virtual environment in python
+python -m venv .venv`
 
+#3. activate it (use keyword "deactivate" to deactivate it)
+source .venv/bin/activate
+
+#4. install required python packages
+pip install -r requirements.txt
+```
+Note to **NixOS**: if you reinstall python3, you have to recreate virtual environment
 
 run Django in its folder
-
-```cd chefsTable```
-
-```python3 manage.py runserver```
+```bash
+cd project-folder
+python manage.py runserver
+```
