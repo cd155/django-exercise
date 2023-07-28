@@ -1,3 +1,4 @@
 buildDjango/.venv
-buildDjango/chefsTable/chefsTable/__pycache__
 buildDjango/chefsTable/db.sqlite3
+
+**__pycache__
