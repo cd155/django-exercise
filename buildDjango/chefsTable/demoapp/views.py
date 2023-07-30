@@ -5,5 +5,5 @@ from django.http import HttpResponse
 def homepage(request): 
     return HttpResponse("Hello, world. Demoapp.") 
 
-def drinks(request):
-    return HttpResponse("My drinks.") 
+def drinks(request, drink):
+    return HttpResponse(f'My drinks is {drink}.') 
