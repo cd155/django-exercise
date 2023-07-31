@@ -43,7 +43,13 @@ def httpObject(request):
 
 def query(req):
     # http://127.0.0.1:8000/query/?name=john&id=2
-    
+
     name = req.GET['name']
     id = req.GET['id']
     return HttpResponse(f'Name: {name}, UserID:{id}')
+
+
+def showForm(request):
+    # http://127.0.0.1:8000/showForm/
+
+    return render(request, "form.html")

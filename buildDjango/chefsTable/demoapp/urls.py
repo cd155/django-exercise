@@ -6,4 +6,5 @@ urlpatterns = [
     path('drinks/<str:drink>', views.drinks, name='drinks'),
     path('http/', views.httpObject, name='http'),
     path('query/', views.query, name='query'),
+    path("showForm/", views.showForm, name="showForm"),
 ]
