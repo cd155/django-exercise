@@ -9,6 +9,6 @@ urlpatterns = [
     path('http/', views.httpObject, name='http'),
     path('query/', views.query, name='query'),
     path("showForm/", views.showForm, name="showForm"),
-    path("getForm/", views.getForm, name='getForm'),
+    path("showForm/getForm/", views.getForm, name='getForm'),
     path("myReverse/", views.myReverse, name='myReverse'),
 ]

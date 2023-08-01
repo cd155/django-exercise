@@ -1,4 +1,4 @@
-<form action="/getForm/" method="POST">
+<form action="{% url 'demoapp:getForm' %}" method="POST">
   {% csrf_token %}
   <p>Name: <input type="text" name="id"></p>
   <p>UserID :<input type="name" name="name"></p>
