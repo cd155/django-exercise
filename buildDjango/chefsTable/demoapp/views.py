@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.urls import reverse 
 
 # Create your views here.
 
@@ -60,3 +61,8 @@ def getForm(request):
         id = request.POST['id']
         name = request.POST['name']
     return HttpResponse("Name:{} UserID:{}".format(name, id))
+
+
+def myReverse(request):
+    rev = reverse("demoapp:myReverse")
+    return HttpResponse(f'Path: {rev}')
