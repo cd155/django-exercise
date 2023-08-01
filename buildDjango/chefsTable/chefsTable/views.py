@@ -2,6 +2,9 @@ from django.http import HttpResponse, HttpResponseNotFound
 
 
 def handler404(request, exception):
-    # HttpResponse is more general, 
+    # HttpResponse is more general,
     # HttpResponseNotFound make exception more specific
-    return HttpResponseNotFound("my404: Page not found.")
+    return HttpResponseNotFound(
+        "my404: Page not found. \
+        <br><br> \
+        <button onclick="" herf='';""> Go to Homepage</button>")
