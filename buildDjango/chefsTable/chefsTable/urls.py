@@ -21,3 +21,5 @@ urlpatterns = [
     path('', include('demoapp.urls')),
     path('admin/', admin.site.urls),
 ]
+
+handler404 = 'chefsTable.views.handler404'
