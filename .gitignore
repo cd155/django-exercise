@@ -1,4 +1,5 @@
 buildDjango/.venv
 buildDjango/chefsTable/db.sqlite3
 
+**migrations
 **__pycache__
