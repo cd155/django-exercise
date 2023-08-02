@@ -20,3 +20,28 @@ run Django in its folder
 cd project-folder
 python manage.py runserver
 ```
+
+
+## Interact with models
+```bash
+# start shell environment
+python manage.py shell
+
+# import model from app.models
+from demoapp.models import college
+
+# query all data from college table
+college.objects.all()
+
+# insert a row
+college.objects.create(CollegeID=1,year=2020,...)
+
+# get the data base on id
+a = college.objects.get(CollegeID=1)
+
+# update the row with name equal to 'University'
+a.name = 'University'
+a.save()
+```
+
+## Version control on Migration
