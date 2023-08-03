@@ -45,3 +45,13 @@ a.save()
 ```
 
 ## Version control on Migration
+```bash
+# show raw sql command
+python manage.py sqlmigrate demoapp 0001
+
+# show all applied migrations
+python manage.py showmigrations 
+
+# row back demoapp database to 0001 version
+python manage.py migrate demoapp 0001
+```
