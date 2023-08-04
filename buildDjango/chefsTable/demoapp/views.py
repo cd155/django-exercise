@@ -1,4 +1,4 @@
-from demoapp.forms import InputForm
+from demoapp.forms import InputForm, LogForm
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse
@@ -69,7 +69,17 @@ def myReverse(request):
     return HttpResponse(f'Path: {rev}')
 
 
-def formView(request):
+def formInputForm(request):
     form = InputForm()
+    context = {"form": form}
+    return render(request, "home.html", context)
+
+
+def formLogForm(request):
+    form = LogForm()
+    if request.method == 'POST':
+        form = LogForm(request.POST)
+        if form.is_valid():
+            form.save()
     context = {"form": form}
     return render(request, "home.html", context)
