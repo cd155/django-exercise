@@ -1,6 +1,7 @@
+from demoapp.forms import InputForm
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.urls import reverse 
+from django.urls import reverse
 
 # Create your views here.
 
@@ -66,3 +67,9 @@ def getForm(request):
 def myReverse(request):
     rev = reverse("demoapp:myReverse")
     return HttpResponse(f'Path: {rev}')
+
+
+def formView(request):
+    form = InputForm()
+    context = {"form": form}
+    return render(request, "home.html", context)

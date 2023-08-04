@@ -11,4 +11,5 @@ urlpatterns = [
     path("showForm/", views.showForm, name="showForm"),
     path("showForm/getForm/", views.getForm, name='getForm'),
     path("myReverse/", views.myReverse, name='myReverse'),
+    path("home/", views.formView, name='formView'),
 ]
