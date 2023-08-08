@@ -27,3 +27,7 @@ class Logger(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     time_log = models.TimeField(help_text="hh:mm:ss")
+
+    # override str(object) method
+    def __str__(self):
+        return f'{self.last_name} {self.first_name}'
