@@ -83,3 +83,15 @@ def formLogForm(request):
             form.save()
     context = {"form": form}
     return render(request, "home.html", context)
+
+
+def home1(request):
+    return render(request, "home1.html", {})
+
+
+def register(request):
+    return render(request, "register.html", {})
+
+
+def login(request):
+    return render(request, "login.html", {})

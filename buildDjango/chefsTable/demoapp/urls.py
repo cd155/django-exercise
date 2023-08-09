@@ -13,4 +13,7 @@ urlpatterns = [
     path("myReverse/", views.myReverse, name='myReverse'),
     path("inputForm/", views.formInputForm, name='inputForm'),
     path("logForm/", views.formLogForm, name='logForm'),
+    path('home1/', views.home1, name='home1'), 
+    path('register/', views.register, name='register'),  
+    path('login/', views.login, name='login'), 
 ]
