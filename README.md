@@ -1,5 +1,6 @@
 # django-exercise
 
+## Python virtual environment
 Need to start the Python virtual environment. In this way, you don't need to worry about your global settings
 ```bash
 # 1. cd into outer layer folder of the project folder
@@ -13,7 +14,12 @@ source .venv/bin/activate
 #4. install required python packages
 pip install -r requirements.txt
 ```
-Note to **NixOS**: if you reinstall python3, you have to recreate virtual environment
+Note: if you reinstall python3, you have to recreate virtual environment
+
+## Nix-Shell
+```bash
+nix-shell shell.nix
+```
 
 run Django in its folder
 ```bash
