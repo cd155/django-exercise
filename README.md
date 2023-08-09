@@ -18,12 +18,10 @@ Note: if you reinstall python3, you have to recreate virtual environment
 
 ## Nix-Shell
 ```bash
+# run nix-shell to install python packages
 nix-shell shell.nix
-```
 
-run Django in its folder
-```bash
-cd project-folder
+# run Django in its folder
 python manage.py runserver
 ```
 
