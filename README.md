@@ -59,3 +59,15 @@ python manage.py showmigrations
 # row back demoapp database to 0001 version
 python manage.py migrate demoapp 0001
 ```
+
+## 
+```bash
+# run all test cases
+python manage.py test
+
+# run all test in the app
+python manage.py test demoapp
+
+# run specific tests
+python manage.py test demoapp.tests.LoggerTestCase.test_logger_types
+```
