@@ -60,7 +60,7 @@ python manage.py showmigrations
 python manage.py migrate demoapp 0001
 ```
 
-## 
+## Run test cases
 ```bash
 # run all test cases
 python manage.py test
