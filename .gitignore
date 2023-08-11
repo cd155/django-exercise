@@ -1,8 +1,7 @@
-buildDjango/.venv
-buildDjango/chefsTable/db.sqlite3
-buildDjango/chefsTable/test.sql
 buildDjango/final project/assets/
 buildDjango/final project/Final Assessment.md
 
-**migrations
-**__pycache__
+*.sql
+*.sqlite3
+**/migrations
+**/__pycache__
