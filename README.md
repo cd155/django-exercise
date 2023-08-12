@@ -71,3 +71,4 @@ python manage.py test demoapp
 # run specific tests
 python manage.py test demoapp.tests.LoggerTestCase.test_logger_types
 ```
+-- test
