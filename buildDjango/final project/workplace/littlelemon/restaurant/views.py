@@ -27,3 +27,10 @@ def menu(request):
     menu_data = Menu.objects.all()
     dict_menu_data = {"menu": menu_data}
     return render(request, 'menu.html', dict_menu_data)
+
+
+def display_menu_items(request, pk):
+    menu_item=""
+    if pk:
+        menu_item = Menu.objects.get(pk=pk)
+    return render(request, 'menu_item.html', {"menu_item":menu_item})
