@@ -50,3 +50,13 @@ class SingleBookView(generics.RetrieveUpdateAPIView):
 
     # change look up file, defaults to 'pk'
     lookup_field = 'title'
+
+
+class MenuItemsView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
