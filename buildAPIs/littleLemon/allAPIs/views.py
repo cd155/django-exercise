@@ -5,11 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework import generics
 
 from .models import Book
 from .forms import BookForm
-
-# Create your views here.
+from .serializers import BookSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -37,3 +37,16 @@ def books(request):
             return JsonResponse(
                 {'error': 'true', 'message': 'required field missing'},
                 status=400)
+
+
+class BookView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+class SingleBookView(generics.RetrieveUpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    # change look up file, defaults to 'pk'
+    lookup_field = 'title'
