@@ -74,9 +74,19 @@ class SingleCategoryView(generics.RetrieveUpdateDestroyAPIView):
 # function view for menu_items
 @api_view()
 def menu_items(request):
-    items = Book.objects.all()
-    serialized_item = BookSerializer(items, many=True, context={'request': request})
-    return Response(serialized_item.data)
+    if request.method == 'GET':
+        items = Book.objects.all()
+
+        # serialize the object to string
+        serialized_item = BookSerializer(items, many=True, context={'request': request})
+        return Response(serialized_item.data)
+    if request.method == 'POST':
+
+        # deserialize string to the object
+        serialized_item = BookSerializer(data=request.data)
+        serialized_item.is_valid(raise_exception=True)
+        serialized_item.save()
+        return Response(serialized_item.data, status.HTTP_201_CREATED)
 
 @api_view()
 def single_item(request, id):
