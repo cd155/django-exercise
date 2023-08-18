@@ -7,9 +7,9 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework import generics
 
-from .models import Book
+from .models import Book, Category
 from .forms import BookForm
-from .serializers import BookSerializer
+from .serializers import BookSerializer, CategorySerializer
 
 
 @api_view(['GET', 'POST'])
@@ -53,10 +53,20 @@ class SingleBookView(generics.RetrieveUpdateAPIView):
 
 
 class MenuItemsView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
+    # more efficient for relation in two models
+    queryset = Book.objects.select_related('category').all()
     serializer_class = BookSerializer
 
 
 class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+
+
+class CategoriesView(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class SingleCategoryView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
