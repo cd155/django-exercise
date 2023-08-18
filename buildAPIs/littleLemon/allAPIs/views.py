@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
@@ -70,3 +70,22 @@ class CategoriesView(generics.ListCreateAPIView):
 class SingleCategoryView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+# function view for menu_items
+@api_view()
+def menu_items(request):
+    items = Book.objects.all()
+    serialized_item = BookSerializer(items, many=True, context={'request': request})
+    return Response(serialized_item.data)
+
+@api_view()
+def single_item(request, id):
+    item = Book.objects.get(pk=id)
+    serialized_item = BookSerializer(item)
+    return Response(serialized_item.data)
+
+@api_view()
+def category_detail(request, id):
+    category = get_object_or_404(Category, pk=id)
+    serialized_category = CategorySerializer(category)
+    return Response(serialized_category.data)
