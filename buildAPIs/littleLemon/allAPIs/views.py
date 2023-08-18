@@ -89,13 +89,13 @@ def menu_items(request):
         return Response(serialized_item.data, status.HTTP_201_CREATED)
 
 @api_view()
-def single_item(request, id):
-    item = Book.objects.get(pk=id)
-    serialized_item = BookSerializer(item)
+def single_item(request, pk):
+    item = Book.objects.get(pk=pk)
+    serialized_item = BookSerializer(item, context={'request': request})
     return Response(serialized_item.data)
 
 @api_view()
-def category_detail(request, id):
-    category = get_object_or_404(Category, pk=id)
+def category_detail(request, pk):
+    category = get_object_or_404(Category, pk=pk)
     serialized_category = CategorySerializer(category)
     return Response(serialized_category.data)
