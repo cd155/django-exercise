@@ -14,7 +14,14 @@ class BookSerializer(serializers.ModelSerializer):
     # category = serializers.StringRelatedField()
 
     # set full category
-    category = CategorySerializer()
+    # category = CategorySerializer()
+
+    category = serializers.HyperlinkedRelatedField(
+        queryset=Category.objects.all(),
+
+        # bug: have to specify the app name in Hyperlinked
+        view_name='allAPIs:category-detail' 
+    )
 
     # assign inventory field to stock
     stock = serializers.IntegerField(source='inventory')
