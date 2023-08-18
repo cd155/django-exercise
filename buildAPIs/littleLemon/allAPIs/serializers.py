@@ -17,11 +17,17 @@ class BookSerializer(serializers.ModelSerializer):
     # category = CategorySerializer()
 
     category = serializers.HyperlinkedRelatedField(
-        queryset=Category.objects.all(),
+        # used for model instance lookups when validating the field input.
+        # queryset=Category.objects.all(),
 
         # bug: have to specify the app name in Hyperlinked
-        view_name='allAPIs:category-detail' 
+        view_name='allAPIs:category-detail',
+
+        read_only=True
     )
+
+    # make category_id writable but not visible
+    category_id = serializers.IntegerField(write_only=True)
 
     # assign inventory field to stock
     stock = serializers.IntegerField(source='inventory')
@@ -34,7 +40,7 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ['id', 'title', 'author', 'price',
-                  'stock', 'category', 'price_after_tax']
+                  'stock', 'category', 'price_after_tax', 'category_id']
         extra_kwargs = {
             'price': {'min_value': 2},
             'inventory': {'min_value': 0},
