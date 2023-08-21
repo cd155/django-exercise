@@ -4,6 +4,7 @@ let
     django
     djangorestframework
     django-debug-toolbar
+    bleach
     # other python packages
 
     # Install package not available in Nixpkgs
