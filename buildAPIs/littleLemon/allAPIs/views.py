@@ -56,6 +56,9 @@ class MenuItemsView(generics.ListCreateAPIView):
     # more efficient for relation in two models
     queryset = Book.objects.select_related('category').all()
     serializer_class = BookSerializer
+    ordering_fields = ['price', 'inventory']
+    filterset_fields = ['price', 'inventory']
+    search_fields = ['title']
 
 
 class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
