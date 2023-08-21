@@ -66,7 +66,7 @@ class BookSerializer(serializers.ModelSerializer):
         else:
             return value
 
-    # other validate method
+    # all general validate methods
     # def validate(self, attrs):
     #     if(attrs['price']<2):
     #         raise serializers.ValidationError('Price should not be less than 2.0')
