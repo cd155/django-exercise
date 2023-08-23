@@ -2,10 +2,11 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status, generics, viewsets
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework import generics
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+from .throttles import ThreeCallsPerMinute
 
 from .models import Book, Category
 from .forms import BookForm
@@ -62,6 +63,14 @@ class MenuItemsView(generics.ListCreateAPIView):
     filterset_fields = ['price', 'inventory']
     search_fields = ['title']
 
+    # conditional throttling
+    def get_throttles(self):
+        if self.request.method == 'GET':
+            self.throttle_classes = [AnonRateThrottle, UserRateThrottle]
+        else:
+            self.throttle_classes = [ThreeCallsPerMinute]
+        return [throttle() for throttle in self.throttle_classes]
+
 
 class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
@@ -72,18 +81,22 @@ class CategoriesView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+
 class SingleCategoryView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 # function view for menu_items
+
+
 @api_view()
 def menu_items(request):
     if request.method == 'GET':
         items = Book.objects.all()
 
         # serialize the object to string
-        serialized_item = BookSerializer(items, many=True, context={'request': request})
+        serialized_item = BookSerializer(
+            items, many=True, context={'request': request})
         return Response(serialized_item.data)
     if request.method == 'POST':
 
@@ -93,11 +106,13 @@ def menu_items(request):
         serialized_item.save()
         return Response(serialized_item.data, status.HTTP_201_CREATED)
 
+
 @api_view()
 def single_item(request, pk):
     item = Book.objects.get(pk=pk)
     serialized_item = BookSerializer(item, context={'request': request})
     return Response(serialized_item.data)
+
 
 @api_view()
 def category_detail(request, pk):
