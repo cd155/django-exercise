@@ -160,3 +160,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
 }
+
+DJOSER = {
+    # set primary key in User model
+    'USER_ID_FIELD': 'username',
+    # 'LOGIN_FIELD': 'email',
+}
