@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from django.contrib.auth.models import User 
 
 class Category(models.Model):
     slug = models.SlugField()
@@ -22,3 +23,9 @@ class Book(models.Model):
     class Meta:
         # create price indexes
         indexes = models.Index(fields=['price']),
+
+
+class Rating(models.Model):
+    menuitem_id = models.SmallIntegerField()
+    rating = models.SmallIntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
