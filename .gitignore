@@ -5,3 +5,4 @@ buildDjango/final project/Final Assessment.md
 *.sqlite3
 **/migrations
 **/__pycache__
+.venv/
