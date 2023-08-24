@@ -6,11 +6,12 @@ from rest_framework import status, generics, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+from rest_framework.permissions import IsAuthenticated
 from .throttles import ThreeCallsPerMinute
 
-from .models import Book, Category
+from .models import Book, Category, Rating
 from .forms import BookForm
-from .serializers import BookSerializer, CategorySerializer
+from .serializers import BookSerializer, CategorySerializer, RatingSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -119,3 +120,13 @@ def category_detail(request, pk):
     category = get_object_or_404(Category, pk=pk)
     serialized_category = CategorySerializer(category)
     return Response(serialized_category.data)
+
+
+class RatingsView(generics.ListCreateAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+
+    def get_permissions(self):
+        if (self.request.method == 'GET'):
+            return []
+        return [IsAuthenticated()] # need a token to do a post call
