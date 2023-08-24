@@ -7,7 +7,9 @@ let
     bleach
     # other python packages
 
-    # Install package not available in Nixpkgs
+    ## Install package not available in Nixpkgs
+
+    # package 1
     (
       buildPythonPackage rec {
         pname = "djangorestframework-xml";
@@ -23,6 +25,10 @@ let
         ];
       }
     )
+    # package2 
+    # djoser is not available in NixOS
+    # It is not working in custom installation 
+    # try to use `python -m venv .venv`
   ];
   my-python = pkgs.python3.withPackages my-python-packages;
 in my-python.env
