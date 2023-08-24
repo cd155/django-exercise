@@ -1,8 +1,9 @@
-from .models import Book, Category
+from .models import Book, Category, Rating
 from rest_framework import serializers
 from decimal import Decimal
-from rest_framework.validators import UniqueValidator
+from rest_framework.validators import UniqueTogetherValidator
 import bleach
+from django.contrib.auth.models import User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -95,4 +96,24 @@ class BookSerializer(serializers.ModelSerializer):
             #         )
             #     ]
             # }
+        }
+
+
+class RatingSerializer (serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        default=serializers.CurrentUserDefault()
+    )
+
+    class Meta:
+        model = Rating
+        fields = ['user', 'menuitem_id', 'rating']
+
+        # a unique set must be created for a combo of a user and a menu item
+        validators = [UniqueTogetherValidator(
+            queryset=Rating.objects.all(),
+            fields=['user', 'menuitem_id', 'rating']
+        )]
+        extra_kwargs = {
+            'rating': {'max_value': 5, 'min_value': 0}
         }
