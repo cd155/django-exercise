@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
     'allAPIs',
+    'rest_framework.authtoken',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -146,11 +148,15 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 3,
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
+        'rest_framework.throttling.UserRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '2/minute',
-        'user': '5/minute',
+        'anon': '5/minute',
+        'user': '10/minute',
         'three': '3/minute',
-    }
+    },
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
 }
