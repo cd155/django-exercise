@@ -6,9 +6,15 @@ from rest_framework.decorators import api_view
 from .models import Category, MenuItem, Cart, Order, OrderItem
 from .serializers import CategorySerializer, MenuItemSerializer
 
+
 @api_view(['GET', 'POST'])
 def home(request):
     return Response('good', status=status.HTTP_200_OK)
+
+
+class CategoriesView(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class MenuItemsView(generics.ListCreateAPIView):
