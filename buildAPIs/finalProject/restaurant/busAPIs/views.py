@@ -21,8 +21,3 @@ class MenuItemsView(generics.ListCreateAPIView):
     # more efficient for relation in two models
     queryset = MenuItem.objects.select_related('category').all()
     serializer_class = MenuItemSerializer
-
-    # Only include database side field name not Serializer
-    # ordering_fields = ['price', 'inventory']
-    # filterset_fields = ['price', 'inventory']
-    # search_fields = ['title']
