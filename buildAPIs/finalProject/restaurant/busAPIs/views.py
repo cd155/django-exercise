@@ -21,14 +21,22 @@ class CategoriesView(generics.ListCreateAPIView):
 
 
 @permission_classes([IsAuthenticated])
-class MenuItemsView(generics.ListCreateAPIView):
+class MenuItemsView(generics.RetrieveUpdateDestroyAPIView, generics.CreateAPIView):
     # more efficient for relation in two models
     queryset = MenuItem.objects.select_related('category').all()
     serializer_class = MenuItemSerializer
 
-    def post (self, request):
+    def post(self, request):
         if request.user.groups.filter(name='Manager').exists():
             return super().post(request)
         else:
-            return Response('Only managers can edit menu items.', status=status.HTTP_403_FORBIDDEN)
-        
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+    def put(self, request):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    def patch(self, request):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    def delete(self, request):
+        return Response(status=status.HTTP_403_FORBIDDEN)
