@@ -11,4 +11,5 @@ urlpatterns = [
     path('menu-items/<int:pk>', views.SingleMenuItemView.as_view()),
     path('categories', views.CategoriesView.as_view()),
     path('groups/manager/users', views.ManagersView.as_view()),
+    path('groups/manager/users/<int:pk>', views.SingleManagerView.as_view()),
 ]

@@ -75,3 +75,15 @@ class ManagersView(generics.ListCreateAPIView):
             return super().post(request)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+@permission_classes([IsAuthenticated])
+class SingleManagerView(generics.DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def delete(self, request):
+        if request.user.groups.filter(name='Manager').exists():
+            return super().delete(request)
+        else:
+            Response(status=status.HTTP_403_FORBIDDEN)
