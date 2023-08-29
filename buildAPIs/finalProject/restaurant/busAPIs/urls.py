@@ -8,5 +8,6 @@ urlpatterns = [
     path('', include('djoser.urls')),
     path('', include('djoser.urls.authtoken')),
     path('menu-items', views.MenuItemsView.as_view()),
+    path('menu-items/<int:pk>', views.SingleMenuItemView.as_view()),
     path('categories', views.CategoriesView.as_view()),
 ]
