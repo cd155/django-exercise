@@ -21,7 +21,7 @@ class CategoriesView(generics.ListCreateAPIView):
 
 
 @permission_classes([IsAuthenticated])
-class MenuItemsView(generics.RetrieveUpdateDestroyAPIView, generics.CreateAPIView):
+class MenuItemsView(generics.ListCreateAPIView):
     # more efficient for relation in two models
     queryset = MenuItem.objects.select_related('category').all()
     serializer_class = MenuItemSerializer
@@ -32,11 +32,26 @@ class MenuItemsView(generics.RetrieveUpdateDestroyAPIView, generics.CreateAPIVie
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
 
-    def put(self, request):
-        return Response(status=status.HTTP_403_FORBIDDEN)
 
-    def patch(self, request):
-        return Response(status=status.HTTP_403_FORBIDDEN)
+@permission_classes([IsAuthenticated])
+class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    
+    def put(self, request, pk):
+        if request.user.groups.filter(name='Manager').exists():
+            return super().put(request)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
-    def delete(self, request):
-        return Response(status=status.HTTP_403_FORBIDDEN)
+    def patch(self, request, pk):
+        if request.user.groups.filter(name='Manager').exists():
+            return super().patch(request)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    def delete(self, request, pk):
+        if request.user.groups.filter(name='Manager').exists():
+            return super().delete(request)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
