@@ -67,4 +67,4 @@ def managers(request):
         serializer = UserSerializer(users, many=True)
         return JsonResponse(serializer.data, status=201, safe=False)
     else:
-        return Response((managers.values_list('name')), status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_403_FORBIDDEN)
