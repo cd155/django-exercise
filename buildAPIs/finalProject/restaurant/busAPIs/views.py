@@ -62,10 +62,9 @@ class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def managers(request):
-    users = User.objects.filter(groups__name='Manager')
-    serializer = UserSerializer(users, many=True)
-
     if request.user.groups.filter(name='Manager').exists():
+        users = User.objects.filter(groups__name='Manager')
+        serializer = UserSerializer(users, many=True)
         return JsonResponse(serializer.data, status=201, safe=False)
     else:
         return Response((managers.values_list('name')), status=status.HTTP_403_FORBIDDEN)
