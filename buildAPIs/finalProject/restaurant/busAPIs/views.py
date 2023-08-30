@@ -169,6 +169,6 @@ class OrdersView(generics.ListCreateAPIView):
 
 
 @permission_classes([IsAuthenticated])
-class SingleOrderItemView(generics.RetrieveUpdateDestroyAPIView):
+class OrderItemsView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
