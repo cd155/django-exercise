@@ -9,7 +9,7 @@ from rest_framework.decorators import permission_classes
 
 from .models import Category, MenuItem, Cart, Order, OrderItem
 from .serializers import CategorySerializer, MenuItemSerializer,\
-    UserSerializer, CartSerializer
+    UserSerializer, CartSerializer, OrderSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -154,10 +154,15 @@ class CartView(generics.ListCreateAPIView, generics.DestroyAPIView):
             return super().post(request)
         return Response("Sorry, you are not a customer.", status=status.HTTP_400_BAD_REQUEST)
 
-
     def delete(self, request, pk=None):
         self.queryset = Cart.objects.filter(user=request.user.id)
         if request.user.groups.filter(name='Customer').exists():
             self.queryset.delete()
             return Response("Your cart cleared.", status=status.HTTP_200_OK)
         return Response("Sorry, you are not a customer.", status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes([IsAuthenticated])
+class OrdersView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
