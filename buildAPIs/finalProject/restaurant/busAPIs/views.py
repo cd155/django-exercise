@@ -9,7 +9,7 @@ from rest_framework.decorators import permission_classes
 
 from .models import Category, MenuItem, Cart, Order, OrderItem
 from .serializers import CategorySerializer, MenuItemSerializer,\
-    UserSerializer, CartSerializer, OrderSerializer
+    UserSerializer, CartSerializer, OrderSerializer, OrderItemSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -166,3 +166,9 @@ class CartView(generics.ListCreateAPIView, generics.DestroyAPIView):
 class OrdersView(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+
+@permission_classes([IsAuthenticated])
+class SingleOrderItemView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
