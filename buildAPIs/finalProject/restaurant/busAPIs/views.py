@@ -140,8 +140,8 @@ class CartView(generics.ListCreateAPIView, generics.DestroyAPIView):
     serializer_class = CartSerializer
 
     def get(self, request):
-        self.queryset = Cart.objects.filter(user=request.user.id)
         if request.user.groups.filter(name='Customer').exists():
+            self.queryset = Cart.objects.filter(user=request.user.id)
             items = self.queryset.values()
             if len(items) < 1:
                 return Response(status=status.HTTP_404_NOT_FOUND)
