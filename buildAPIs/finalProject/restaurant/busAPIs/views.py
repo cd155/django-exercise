@@ -168,12 +168,13 @@ class OrdersView(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
 
     def get(self, request):
-        if request.user.groups.filter(name='Customer').exists():
-            self.queryset = Order.objects.filter(user=request.user.id)
-            return super().get(request)
-        elif request.user.groups.filter(name='Manager').exists():
+        if request.user.groups.filter(name='Manager').exists():
             self.queryset = Order.objects.all()
             return super().get(request)
+        elif request.user.groups.filter(name='Customer').exists():
+            self.queryset = Order.objects.filter(user=request.user.id)
+            return super().get(request)
+
         elif request.user.groups.filter(name='Delivery crew').exists():
             self.queryset = Order.objects.exclude(delivery_crew=None)
             return super().get(request)
@@ -184,10 +185,9 @@ class OrdersView(generics.ListCreateAPIView):
         if request.user.groups.filter(name='Customer').exists():
             # get all cart items,
             items = Cart.objects.filter(user=request.user.id)
-            
+
             if len(items) == 0:
                 return Response("Cart is empty.", status=status.HTTP_400_BAD_REQUEST)
-
 
             # create a new order
             total = 0
@@ -203,7 +203,7 @@ class OrdersView(generics.ListCreateAPIView):
             # add order items (link to my_order)
             for item in items:
                 print(item.unit_price)
-                           
+
                 my_order_item = OrderItem(order=my_order,
                                           menuitem=item.menuitem,
                                           quantity=item.quantity,
@@ -220,6 +220,29 @@ class OrdersView(generics.ListCreateAPIView):
 
 
 @permission_classes([IsAuthenticated])
-class OrderItemsView(generics.ListAPIView):
-    queryset = OrderItem.objects.all()
+class SingleOrderView(generics.ListAPIView, generics.UpdateAPIView, generics.DestroyAPIView):
     serializer_class = OrderItemSerializer
+
+    def get(self, request, order_id):
+        if request.user.groups.filter(name='Customer').exists():
+            my_order = Order.objects.get(pk=order_id)
+            if request.user.id == my_order.user.id:
+                self.queryset = OrderItem.objects.filter(order=order_id)
+                return super().get(request)
+            else:
+                return Response("Not your order", status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        if request.user.groups.filter(name='Customer').exists():
+            pass
+
+    def patch(self, request):
+        if request.user.groups.filter(name='Customer').exists():
+            pass
+        if request.user.groups.filter(name='Delivery crew').exists():
+            pass
+
+    def delete(self, request):
+        if request.user.groups.filter(name='Manager').exists():
+            pass
