@@ -172,11 +172,10 @@ class OrdersView(generics.ListCreateAPIView):
             self.queryset = Order.objects.all()
             return super().get(request)
         elif request.user.groups.filter(name='Customer').exists():
-            self.queryset = Order.objects.filter(user=request.user.id)
+            self.queryset = Order.objects.filter(user=request.user)
             return super().get(request)
-
         elif request.user.groups.filter(name='Delivery crew').exists():
-            self.queryset = Order.objects.exclude(delivery_crew=None)
+            self.queryset = Order.objects.filter(delivery_crew=request.user)
             return super().get(request)
         else:
             return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
@@ -234,7 +233,7 @@ class SingleOrderView(generics.ListAPIView, generics.UpdateAPIView, generics.Des
         return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        if request.user.groups.filter(name='Customer').exists():
+        if request.user.groups.filter(name='Manager').exists():
             pass
 
     def patch(self, request):
