@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status, generics
@@ -167,8 +168,47 @@ class OrdersView(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
+    def post(self, request):
+        if request.user.groups.filter(name='Customer').exists():
+            # get all cart items,
+            items = Cart.objects.filter(user=request.user.id)
+            
+            if len(items) == 0:
+                return Response("Cart is empty.", status=status.HTTP_400_BAD_REQUEST)
+
+
+            # create a new order
+            total = 0
+            for item in items:
+                total += item.price
+
+            my_order = Order(user=request.user,
+                             status=True,
+                             total=total,
+                             date=datetime.now())
+            my_order.save()
+
+            # add order items (link to my_order)
+            for item in items:
+                print(item.unit_price)
+                           
+                my_order_item = OrderItem(order=my_order,
+                                          menuitem=item.menuitem,
+                                          quantity=item.quantity,
+                                          unit_price=item.unit_price,
+                                          price=item.price)
+                my_order_item.save()
+
+            # clear the cart
+            items.delete()
+
+            return Response("Everything is all set.", status=status.HTTP_201_CREATED)
+
+        return Response("Sorry, you are not a customer.", status=status.HTTP_400_BAD_REQUEST)
+
 
 @permission_classes([IsAuthenticated])
-class OrderItemsView(generics.RetrieveUpdateDestroyAPIView):
+class OrderItemsView(generics.ListAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
+    lookup_field = "order_id"
