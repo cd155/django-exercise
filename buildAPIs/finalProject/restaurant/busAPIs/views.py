@@ -165,8 +165,20 @@ class CartView(generics.ListCreateAPIView, generics.DestroyAPIView):
 
 @permission_classes([IsAuthenticated])
 class OrdersView(generics.ListCreateAPIView):
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+    def get(self, request):
+        if request.user.groups.filter(name='Customer').exists():
+            self.queryset = Order.objects.filter(user=request.user.id)
+            return super().get(request)
+        elif request.user.groups.filter(name='Manager').exists():
+            self.queryset = Order.objects.all()
+            return super().get(request)
+        elif request.user.groups.filter(name='Delivery crew').exists():
+            self.queryset = Order.objects.exclude(delivery_crew=None)
+            return super().get(request)
+        else:
+            return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         if request.user.groups.filter(name='Customer').exists():
