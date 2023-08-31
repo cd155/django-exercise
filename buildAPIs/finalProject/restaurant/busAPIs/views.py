@@ -223,4 +223,3 @@ class OrdersView(generics.ListCreateAPIView):
 class OrderItemsView(generics.ListAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
-    lookup_field = "order_id"
