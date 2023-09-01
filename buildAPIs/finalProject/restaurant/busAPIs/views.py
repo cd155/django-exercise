@@ -236,7 +236,7 @@ class SingleOrderView(generics.RetrieveUpdateDestroyAPIView):
         if request.user.groups.filter(name='Manager').exists():
             return super().put(request)
         return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
-    
+
     def patch(self, request, pk):
         if request.user.groups.filter(name='Manager').exists():
             return super().patch(request)
@@ -248,5 +248,5 @@ class SingleOrderView(generics.RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, pk):
         if request.user.groups.filter(name='Manager').exists():
-            return super().delete(request)        
+            return super().delete(request)
         return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
