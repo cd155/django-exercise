@@ -18,7 +18,6 @@ class MenuItemSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = ['username']
@@ -31,14 +30,17 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    menuitem = serializers.StringRelatedField()
+
     class Meta:
         model = OrderItem
         fields = '__all__'
 
 
 class OrderSerializer(serializers.ModelSerializer):
-
     order_items = serializers.SerializerMethodField(read_only=True)
+    user = serializers.StringRelatedField()
+    delivery_crew = serializers.StringRelatedField()
 
     def get_order_items(self, order: Order):
         order_items = OrderItem.objects.filter(order_id=order.id)
