@@ -10,7 +10,7 @@ from rest_framework.decorators import permission_classes
 
 from .models import Category, MenuItem, Cart, Order, OrderItem
 from .serializers import CategorySerializer, MenuItemSerializer,\
-    UserSerializer, CartSerializer, OrderSerializer, OrderItemSerializer
+    UserSerializer, CartSerializer, OrderSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -219,29 +219,32 @@ class OrdersView(generics.ListCreateAPIView):
 
 
 @permission_classes([IsAuthenticated])
-class SingleOrderView(generics.ListAPIView, generics.UpdateAPIView, generics.DestroyAPIView):
-    serializer_class = OrderItemSerializer
+class SingleOrderView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
 
-    def get(self, request, order_id):
+    def get(self, request, pk):
         if request.user.groups.filter(name='Customer').exists():
-            my_order = Order.objects.get(pk=order_id)
+            my_order = get_object_or_404(Order, pk=pk)
             if request.user.id == my_order.user.id:
-                self.queryset = OrderItem.objects.filter(order=order_id)
                 return super().get(request)
             else:
                 return Response("Not your order", status=status.HTTP_401_UNAUTHORIZED)
         return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request):
+    def put(self, request, order_id):
         if request.user.groups.filter(name='Manager').exists():
-            pass
+            return super().put(request)
+        return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
+    
+    # def patch(self, request):
+    #     if request.user.groups.filter(name='Manager').exists():
+    #         pass
+    #     if request.user.groups.filter(name='Delivery crew').exists():
+    #         pass
+    #     return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request):
-        if request.user.groups.filter(name='Customer').exists():
-            pass
-        if request.user.groups.filter(name='Delivery crew').exists():
-            pass
-
-    def delete(self, request):
-        if request.user.groups.filter(name='Manager').exists():
-            pass
+    # def delete(self, request):
+    #     if request.user.groups.filter(name='Manager').exists():
+    #         pass        
+    #     return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
