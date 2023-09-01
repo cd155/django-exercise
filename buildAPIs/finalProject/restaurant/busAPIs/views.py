@@ -232,19 +232,21 @@ class SingleOrderView(generics.RetrieveUpdateDestroyAPIView):
                 return Response("Not your order", status=status.HTTP_401_UNAUTHORIZED)
         return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, order_id):
+    def put(self, request, pk):
         if request.user.groups.filter(name='Manager').exists():
             return super().put(request)
         return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
     
-    # def patch(self, request):
-    #     if request.user.groups.filter(name='Manager').exists():
-    #         pass
-    #     if request.user.groups.filter(name='Delivery crew').exists():
-    #         pass
-    #     return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
+    def patch(self, request, pk):
+        if request.user.groups.filter(name='Manager').exists():
+            return super().patch(request)
+        if request.user.groups.filter(name='Delivery crew').exists():
+            if 'delivery_crew' in request.data:
+                return Response("can't update this field", status=status.HTTP_400_BAD_REQUEST)
+            return super().patch(request)
+        return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
 
-    # def delete(self, request):
-    #     if request.user.groups.filter(name='Manager').exists():
-    #         pass        
-    #     return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, pk):
+        if request.user.groups.filter(name='Manager').exists():
+            return super().delete(request)        
+        return Response("Unauthorized", status=status.HTTP_400_BAD_REQUEST)
