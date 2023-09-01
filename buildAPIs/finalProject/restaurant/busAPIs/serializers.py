@@ -39,8 +39,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     order_items = serializers.SerializerMethodField(read_only=True)
-    # user = serializers.StringRelatedField()
-    # delivery_crew = serializers.StringRelatedField()
+    user = serializers.StringRelatedField()
+    total = serializers.StringRelatedField()
+    date = serializers.StringRelatedField()
+    # How to filter users by Delivery crew?
+    # delivery_crew = UserSerializer(
+    #     User.objects.filter(groups__name='Delivery crew'), many=True)
 
     def get_order_items(self, order: Order):
         order_items = OrderItem.objects.filter(order_id=order.id)
