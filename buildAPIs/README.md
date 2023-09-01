@@ -7,13 +7,13 @@ python manage.py runserver
 ```
 
 ## APIs address
-/apis/v1/menu-items
-/apis/v1/menu-items/{menuitem_id}
+- /apis/v1/menu-items
+- /apis/v1/menu-items/{menuitem_id}
 
-/apis/v1/groups/manager/users
-/apis/v1/groups/manager/users/{user_id}
+- /apis/v1/groups/manager/users
+- /apis/v1/groups/manager/users/{user_id}
 
-/apis/v1/cart/menu-items
+- /apis/v1/cart/menu-items
 
-/apis/v1/orders
-/apis/v1/orders/{order_id}
+- /apis/v1/orders
+- /apis/v1/orders/{order_id}
