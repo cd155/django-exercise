@@ -51,3 +51,6 @@ class OrderItem(models.Model):
     class Meta:
         # an order only has one entry for this menuitem
         unique_together = ('order', 'menuitem')
+    
+    def __str__(self):
+        return self.menuitem.title
